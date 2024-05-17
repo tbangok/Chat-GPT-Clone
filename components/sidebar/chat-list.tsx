@@ -16,10 +16,15 @@ export const ChatList = () => {
   }
 
   return (
-    <div className=" flex flex-col-reverse justify-end flex-1  overflow-y-auto ">
-      {chats.map((chat) => (
-        <ChatBox key={chat._id} chat={chat} selected={chat._id === chatId} />
-      ))}
+    <div className="flex flex-col-reverse justify-end flex-1 overflow-y-auto">
+      {chats === null ? (
+        <>No chat</>
+      ) : (
+        chats.map((chat) => (
+          <ChatBox key={chat._id} chat={chat} selected={chat._id === chatId} />
+        ))
+      )}
     </div>
   );
 };
+

@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { mutation, query } from "./_generated/server";
+import { internalMutation, mutation, query } from "./_generated/server";
 
 export const store = mutation({
   args: {},
@@ -18,6 +18,17 @@ export const store = mutation({
       .unique();
 
     if (user !== null) {
+      const chat = await ctx.db
+        .query("chats")
+        .withIndex("by_userId", (q) => q.eq("userId", user._id))
+        .first();
+
+      if (chat === null) {
+        const chatId = await ctx.db.insert("chats", {
+          userId: user._id,
+          title: "New chat",
+        });
+      }
       return user._id;
     }
 
@@ -76,6 +87,44 @@ export const currentUser = query({
         q.eq("tokenIdentifier", identity.tokenIdentifier)
       )
       .unique();
- 
+  },
+});
+
+//update subcription
+export const updateSubcription = internalMutation({
+  args: {
+    subscriptionId: v.string(),
+    endsOn: v.number(),
+    userId: v.id("users"),
+  },
+  handler: async (ctx, { subscriptionId, endsOn, userId }) => {
+    await ctx.db.patch(userId, {
+      subscriptionId: subscriptionId,
+      endsOn: endsOn,
+    });
+  },
+});
+
+//update sub by id
+export const updateSubcriptionBySubId = internalMutation({
+  args: {
+    subscriptionId: v.string(),
+    endsOn: v.number(),
+  },
+  handler: async (ctx, { subscriptionId, endsOn }) => {
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_subscriptionId", (q) =>
+        q.eq("subscriptionId", subscriptionId)
+      )
+      .unique();
+
+    if (!user) {
+      throw Error("User not found");
+    }
+
+    await ctx.db.patch(user._id, {
+      endsOn: endsOn,
+    });
   },
 });

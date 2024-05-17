@@ -27,7 +27,9 @@ const Chat = ({ params }: ChatPageProps) => {
         <Body chatId={params.chatId} />
         <div className="w-full fixed bottom-0">
           <Form chatId={params.chatId} />
-          <p className="w-full text-center text-xs  text-neutral-400 my-2 lg:pr-[300px] ">ChatGPT could make errors. Consider checking important information</p>
+          <p className="  text-center text-xs  text-neutral-400 w-full   my-2 sm:px-12 md:px-24   md:pr-[300px]  lg:pr-[400px]  ">
+            ChatGPT could make errors. Consider checking important information
+          </p>
         </div>
       </div>
     </div>

@@ -22,8 +22,8 @@ export const MessageBox = ({ message, userImageUrl }: MessageBoxProps) => {
       </Avatar>
       <div className="max-w-[calc(80%)]">
         <h3 className="font-bold">{nameString}</h3>
-        <div className="flex flex-grow flex-col gap-3 gap-y-5">
-          <Markdown content={message.content}/>
+        <div className="flex flex-grow flex-col gap-3 gap-y-5 lg:max-w-[700px] md:max-w-[550px] sm:max-w-[300px]">
+          <Markdown content={message.content} />
         </div>
       </div>
     </div>

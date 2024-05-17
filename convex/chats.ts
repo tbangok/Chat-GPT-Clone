@@ -4,7 +4,7 @@ import { title } from "process";
 
 export const get = query({
   args: { id: v.id("chats") },
-  handler: async (ctx,args) => {
+  handler: async (ctx, args) => {
     const chat = await ctx.db.get(args.id);
 
     return chat;
@@ -43,7 +43,7 @@ export const list = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) {
-      throw new Error("Cant load chat without user!");
+      return [];
     }
 
     const user = await ctx.db
@@ -54,7 +54,7 @@ export const list = query({
       .unique();
 
     if (user === null) {
-      throw Error("User not found");
+      return null;
     }
 
     return ctx.db
